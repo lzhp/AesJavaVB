@@ -1,6 +1,7 @@
 package org.test;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 import org.apache.commons.codec.binary.Hex;
 import org.junit.Assert;
@@ -49,6 +50,20 @@ public class TestAESHelper {
 		for (int i = 0; i < data.length; i = i + 2) {
 			Assert.assertEquals("enc", data[i + 1], AESHelper.Utf8AESBase64Encrypt(data[i], key));
 			Assert.assertEquals("dec", data[i], AESHelper.Utf8AESBase64Decrypt(data[i + 1], key));
+		}
+	}
+	
+	@Test
+	public void test5() throws Exception {
+		String key = "12345678";
+
+		// vb计算的加密结果
+		String[] data = { "Text1", "fDqq%2F10ANTQEEjxrbQSOug%3D%3D", "中国", "q9KVLhvIfpuUUDW27WVeVQ%3D%3D", "Text1中国",
+				"F%2FI3mVwcZZOSRuvwCSesnQ%3D%3D", "emsno=abc1234567", "%2BsjRFYLROBVhT%2BVuLKHuLQ%3D%3D" };
+
+		for (int i = 0; i < data.length; i = i + 2) {
+			Assert.assertEquals("enc", URLDecoder.decode(data[i + 1], "UTF-8"), AESHelper.Utf8AESBase64Encrypt(data[i], key));
+			Assert.assertEquals("dec", data[i], AESHelper.Utf8AESBase64Decrypt(URLDecoder.decode(data[i + 1], "UTF-8"), key));
 		}
 	}
 

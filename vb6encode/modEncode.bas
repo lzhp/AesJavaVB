@@ -309,7 +309,7 @@ End Function
 'Returns:
 'Remarks:
 '*************************************************************
-Public Function utf8AESBase64(source As String, key As String) As String
+Public Function utf8AESBase64encode(source As String, key As String) As String
     Dim pass()        As Byte
     Dim plaintext()   As Byte
     Dim ciphertext()  As Byte
@@ -327,7 +327,7 @@ Public Function utf8AESBase64(source As String, key As String) As String
     m_AES.SetCipherKey pass, KeyBits
     m_AES.ArrayEncrypt plaintext, ciphertext, 0
 
-    utf8AESBase64 = Base64Encode(ciphertext)
+    utf8AESBase64encode = Base64Encode(ciphertext)
 
 End Function
 
@@ -341,7 +341,7 @@ End Function
 'Returns:
 'Remarks:
 '*************************************************************
-Public Function utf8AESBase64dec(cipherStr As String, key As String) As String
+Public Function utf8AESBase64decode(cipherStr As String, key As String) As String
 On Error GoTo ErrHandler
 
     Dim pass()        As Byte
@@ -361,10 +361,31 @@ On Error GoTo ErrHandler
     m_AES.SetCipherKey pass, KeyBits
     m_AES.ArrayDecrypt plaintext, ciphertext, 0
 
-    utf8AESBase64dec = FromUTF8Bytes(plaintext)
+    utf8AESBase64decode = FromUTF8Bytes(plaintext)
 
 Exit Function
 ErrHandler:
     Err.Raise C_ERROR_NUMBER, G_ModName & "-" & "utf8AESBase64dec", Err.source & vbCrLf & Err.Description
 End Function
 
+'*************************************************************
+'Procedure:    Public Method encodeUrlParams
+'Description:
+'Created:      2016-7-20 by lizhipeng
+'Parameters:
+'       origin
+'       key
+'Returns:
+'Remarks:
+'*************************************************************
+Public Function encodeUrlParams(origin As String, key As String) As String
+On Error GoTo ErrHandler
+
+    Dim strTmp As String
+    strTmp = utf8AESBase64encode(origin, key)
+    encodeUrlParams = UrlEncode_Utf8(strTmp)
+
+Exit Function
+ErrHandler:
+    Err.Raise C_ERROR_NUMBER, G_ModName & "-" & "encodeUrlParams", Err.source & vbCrLf & Err.Description
+End Function

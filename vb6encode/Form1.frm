@@ -9,12 +9,20 @@ Begin VB.Form Form1
    ScaleHeight     =   6225
    ScaleWidth      =   7785
    StartUpPosition =   3  'Windows Default
+   Begin VB.CommandButton cmdEncodeUrlParams 
+      Caption         =   "encodeUrlParams"
+      Height          =   615
+      Left            =   5640
+      TabIndex        =   18
+      Top             =   5520
+      Width           =   1695
+   End
    Begin VB.CommandButton cmdAESdec 
       Caption         =   "AESΩ‚√‹"
       Height          =   495
       Left            =   5760
       TabIndex        =   17
-      Top             =   5280
+      Top             =   4920
       Width           =   975
    End
    Begin VB.CommandButton cmdAESenc 
@@ -22,7 +30,7 @@ Begin VB.Form Form1
       Height          =   495
       Left            =   5760
       TabIndex        =   16
-      Top             =   4800
+      Top             =   4440
       Width           =   975
    End
    Begin VB.CommandButton cmdUTF8 
@@ -167,11 +175,11 @@ Attribute VB_Exposed = False
 
 
 Private Sub cmdAESdec_Click()
-    txtDec.Text = utf8AESBase64dec(txtEnc.Text, txtKey.Text)
+    txtDec.Text = utf8AESBase64decode(txtEnc.Text, txtKey.Text)
 End Sub
 
 Private Sub cmdAESenc_Click()
-    txtEnc.Text = utf8AESBase64(txtSource.Text, txtKey.Text)
+    txtEnc.Text = utf8AESBase64encode(txtSource.Text, txtKey.Text)
 End Sub
 
 Private Sub cmdBase64_Click()
@@ -182,6 +190,10 @@ Private Sub cmdBase64dec_Click()
     txtDec.Text = FromUTF8Bytes(Base64Decode(txtEnc.Text))
 End Sub
 
+
+Private Sub cmdEncodeUrlParams_Click()
+    txtEnc.Text = encodeUrlParams(txtSource.Text, txtKey.Text)
+End Sub
 
 Private Sub cmdURLdec_Click()
     txtDec.Text = URLDecode(txtEnc.Text)
@@ -214,6 +226,5 @@ Private Sub cmdUTF8URLenc_Click()
     txtEnc.Text = UrlEncode_Utf8(txtSource.Text)
 End Sub
 
-Private Sub Command1_Click()
-    Form2.Show
-End Sub
+
+
